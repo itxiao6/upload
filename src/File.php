@@ -244,9 +244,9 @@ class File extends SplFileInfo
         }
 
         // Validate is uploaded file
-        if ($this->isUploadedFile() === false) {
-            $this->errors[] = 'The uploaded file was not sent with a POST request';
-        }
+//        if ($this->isUploadedFile() === false) {
+//            $this->errors[] = 'The uploaded file was not sent with a POST request';
+//        }
 
         // User validations
         foreach ($this->validations as $validation) {
@@ -332,6 +332,9 @@ class File extends SplFileInfo
     public function isOk()
     {
         return ($this->errorCode === UPLOAD_ERR_OK);
+    }
+    public function getWebUrl(){
+        return $this -> storage -> getWebUrl();
     }
 
     /**

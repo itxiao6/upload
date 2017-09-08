@@ -12,6 +12,16 @@ use InvalidArgumentException;
 class FileSystem extends Base
 {
     /**
+     * web访问目录
+     * @var string
+     */
+    protected $host;
+    /**
+     * web可以访问的url
+     * @var
+     */
+    protected $webUrl;
+    /**
      * Upload directory
      * @var string
      */
@@ -26,11 +36,12 @@ class FileSystem extends Base
     /**
      * Constructor
      * @param  string                       $directory      Relative or absolute path to upload directory
+     * @param  string                       $host      Should this overwrite existing files?
      * @param  bool                         $overwrite      Should this overwrite existing files?
      * @throws InvalidArgumentException                    If directory does not exist
      * @throws InvalidArgumentException                    If directory is not writable
      */
-    public function __construct($directory, $overwrite = false)
+    public function __construct($directory,$host, $overwrite = false)
     {
         if (!is_dir($directory)) {
             throw new InvalidArgumentException('Directory does not exist');
@@ -40,6 +51,7 @@ class FileSystem extends Base
         }
         $this->directory = rtrim($directory, '/') . DIRECTORY_SEPARATOR;
         $this->overwrite = $overwrite;
+        $this -> host = $host;
     }
 
     /**
@@ -63,8 +75,21 @@ class FileSystem extends Base
             $file->addError('File already exists');
             throw new UploadException('File already exists');
         }
-
+        # 设置web访问目录
+        $this -> webUrl = rtrim($this -> host,'/').'/'.(isset($newName)||$newName==''?
+                $file -> getName().'.'.$file->getExtension()
+                :$newName
+            );
+        # 返回上传结果
         return $this->moveUploadedFile($file->getPathname(), $newFile);
+    }
+
+    /**
+     * 获取WebUrl
+     * @return mixed
+     */
+    public function getWebUrl(){
+        return $this -> webUrl;
     }
 
     /**
@@ -79,6 +104,6 @@ class FileSystem extends Base
      */
     protected function moveUploadedFile($source, $destination)
     {
-        return move_uploaded_file($source, $destination);
+        return copy($source,$destination);
     }
 }

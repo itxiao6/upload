@@ -4,13 +4,12 @@ use Itxiao6\Upload\Storage\Base;
 use Itxiao6\Upload\Exception\UploadException;
 use Itxiao6\Upload\File;
 use InvalidArgumentException;
-use Qiniu\Qiniu as Qiniua;
 /**
- * 七牛文件存储
+ * 阿里Oss文件存储
  * Class FileSystem
  * @package Itxiao6\Upload\Storage
  */
-class QiniuSystem extends Base
+class AliOssSystem extends Base
 {
     /**
      * web可以访问的url
@@ -18,18 +17,18 @@ class QiniuSystem extends Base
      */
     protected $webUrl;
     /**
-     * 七牛驱动
+     * 阿里OSS驱动
      * @var
      */
     protected static $client;
     /**
-     * 七牛的专属域名
+     * 阿里OSS的专属域名
      * @var
      */
     protected static $host;
 
     /**
-     * 七牛储存构造器
+     * 阿里OSS储存构造器
      * @param $accessKey
      * @param $secretKey
      * @param $Bucket_Name
@@ -72,7 +71,7 @@ class QiniuSystem extends Base
             $file->addError('File already exists');
             throw new UploadException('File already exists');
         }
-        # 七牛上传文件
+        # 阿里OSS上传文件
         if($str = self::$client
             -> uploadFile(
                 $file->getPathname(),
