@@ -25,7 +25,13 @@ $_FILES['picname'] = [
 //    'upload2',
 //    'http://ovy5w74522h.bkt.cloudd2n.com');
 # 实例化阿里云Oss
-$storage = new
+$storage = new \Itxiao6\Upload\Storage\AliOssSystem(
+    'LTAIGYU9VH9407aZ',
+    'UcKYz7ylVWGkkrRq2UxdW7eWs0wf3a',
+    'itxiao6',
+    'http://itxiao6.oss-cn-shanghai.aliyuncs.com',
+    'itxiao6.vpc100-oss-cn-shanghai.aliyuncs.com',
+    'itxiao6.oss-cn-shanghai-internal.aliyuncs.com');
 
 # 初始化文件上传系统
 $file = new File('picname', $storage);
