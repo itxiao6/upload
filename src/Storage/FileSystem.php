@@ -5,7 +5,7 @@ use Itxiao6\Upload\Exception\UploadException;
 use Itxiao6\Upload\File;
 use InvalidArgumentException;
 /**
- * 文件存储
+ * 本地文件存储
  * Class FileSystem
  * @package Itxiao6\Upload\Storage
  */
