@@ -259,7 +259,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get file validation errors
+     * 获取文件验证错误
      * @return array[String]
      */
     public function getErrors()
@@ -268,7 +268,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Add file validation error
+     * 添加一个文件验证错误
      * @param  string
      * @return \Itxiao6\Upload\File Self
      */
@@ -284,8 +284,8 @@ class File extends SplFileInfo
     *******************************************************************************/
 
     /**
-     * Upload file (delegated to storage object)
-     * @param  string $newName Give the file it a new name
+     * 上传文件 (交给储存对象)
+     * @param  string $newName 文件的一个新昵称
      * @return bool
      * @throws \Itxiao6\Upload\Exception\UploadException If file does not validate
      */
@@ -304,11 +304,11 @@ class File extends SplFileInfo
     }
 
     /********************************************************************************
-    * Helpers
+    * 辅助
     *******************************************************************************/
 
     /**
-     * Is this file uploaded with a POST request?
+     * 这个文件上载有POST请求吗？
      *
      * This is a separate method so that it can be stubbed in unit tests to avoid
      * the hard dependency on the `is_uploaded_file` function.
@@ -321,7 +321,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Is this file OK?
+     * 文件是否上传成功
      *
      * This method inspects the upload error code to see if the upload was
      * successful or if it failed for a variety of reasons.
@@ -335,7 +335,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Convert human readable file size (e.g. "10K" or "3M") into bytes
+     * 转换为人性化 可读的文件大小（例如“10k”或“3M”）为字节
      * @param  string $input
      * @return int
      */
