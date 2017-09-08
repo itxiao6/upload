@@ -4,6 +4,7 @@ use Itxiao6\Upload\Storage\Base;
 use Itxiao6\Upload\Exception\UploadException;
 use Itxiao6\Upload\File;
 use InvalidArgumentException;
+use JohnLui\AliyunOSS;
 /**
  * 阿里Oss文件存储
  * Class FileSystem
@@ -15,12 +16,12 @@ class AliOssSystem extends Base
      * VPC 内网域名
      * @var
      */
-    protected $vpc_host;
+    protected static $vpc_host;
     /**
      * 经典网络内网域名
      * @var
      */
-    protected $loca_host;
+    protected static $loca_host;
     /**
      * web可以访问的url
      * @var
@@ -86,19 +87,10 @@ class AliOssSystem extends Base
             $file->addError('File already exists');
             throw new UploadException('File already exists');
         }
+        self::$client = AliyunOSS::boot('','','','','');
+        self::$client -> uploadFile();
         # 阿里OSS上传文件
-        if($str = self::$client
-            -> uploadFile(
-                $file->getPathname(),
-                (isset($newName)||$newName==''?
-                    $file -> getName().'.'.$file->getExtension()
-                    :$newName
-                )) -> data['url']){
-
-            # 获取开始的位置
-            $start = strripos($str,'/');
-            # 设置web访问地址
-            $this -> webUrl = rtrim(self::$host,'/').substr($str,$start);
+        if(false==false){
             return true;
         }else{
             return false;
