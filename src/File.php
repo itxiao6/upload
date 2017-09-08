@@ -40,13 +40,13 @@ class File extends SplFileInfo
 
     /**
      * Storage delegate
-     * @var \Upload\Storage\Base
+     * @var \Itxiao6\Upload\Storage\Base
      */
     protected $storage;
 
     /**
      * Validations
-     * @var array[\Upload\Validation\Base]
+     * @var array[\Itxiao6\Upload\Validation\Base]
      */
     protected $validations;
 
