@@ -12,6 +12,16 @@ use InvalidArgumentException;
 class AliOssSystem extends Base
 {
     /**
+     * VPC 内网域名
+     * @var
+     */
+    protected $vpc_host;
+    /**
+     * 经典网络内网域名
+     * @var
+     */
+    protected $loca_host;
+    /**
      * web可以访问的url
      * @var
      */
@@ -32,8 +42,11 @@ class AliOssSystem extends Base
      * @param $accessKey
      * @param $secretKey
      * @param $Bucket_Name
+     * @param $host web 访问域名
+     * @param $vpc_host 内网域名
+     * @param $loca_host 经典网络内网域名
      */
-    public function __construct($accessKey,$secretKey,$Bucket_Name,$host)
+    public function __construct($accessKey,$secretKey,$Bucket_Name,$host,$vpc_host,$loca_host)
     {
         self::$client = Qiniua::create([
             'access_key' => $accessKey,
@@ -41,6 +54,8 @@ class AliOssSystem extends Base
             'bucket'     => $Bucket_Name
         ]);
         self::$host = $host;
+        self::$vpc_host = $vpc_host;
+        self::$loca_host = $loca_host;
     }
     /**
      * 获取WebUrl
