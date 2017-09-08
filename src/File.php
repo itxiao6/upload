@@ -2,29 +2,38 @@
 namespace Itxiao6\Upload;
 use SplFileInfo;
 use InvalidArgumentException;
-use Itxiao6\Upload\Storage\Base;
+# 存储接口
+use Itxiao6\Upload\Storage\Base as Storage_Base;
+# 验证接口
+use Itxiao6\Upload\Validation\Base as Validation_Base;
+
+/**
+ * 文件处理
+ * Class File
+ * @package Itxiao6\Upload
+ */
 class File extends SplFileInfo
 {
     /********************************************************************************
-    * Static Properties
+    * 静态属性
     *******************************************************************************/
 
     /**
-     * Upload error code messages
+     * 上传错误消息
      * @var array
      */
     protected static $errorCodeMessages = array(
-        1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-        2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-        3 => 'The uploaded file was only partially uploaded',
-        4 => 'No file was uploaded',
-        6 => 'Missing a temporary folder',
-        7 => 'Failed to write file to disk',
-        8 => 'A PHP extension stopped the file upload'
+        1 => '上传的文件在php.ini中超过upload_max_filesize设定',
+        2 => '上传的文件超过 max_file_siz e指令是在HTML表单中指定的大小',
+        3 => '上传的文件只是部分上传。',
+        4 => '没有上传文件',
+        6 => '缺少临时文件夹',
+        7 => '无法将文件写入磁盘',
+        8 => 'PHP扩展停止了文件上传。'
     );
 
     /**
-     * Lookup hash to convert file units to bytes
+     * 文件大小转换单位
      * @var array
      */
     protected static $units = array(
@@ -35,23 +44,23 @@ class File extends SplFileInfo
     );
 
     /********************************************************************************
-    * Instance Properties
+    * 接口属性
     *******************************************************************************/
 
     /**
-     * Storage delegate
-     * @var \Itxiao6\Upload\Storage\Base
+     * 存储
+     * @var array
      */
     protected $storage;
 
     /**
-     * Validations
-     * @var array[\Itxiao6\Upload\Validation\Base]
+     * 验证
+     * @var array
      */
     protected $validations;
 
     /**
-     * Validation errors
+     * 验证错误信息
      * @var array
      */
     protected $errors;
@@ -90,11 +99,11 @@ class File extends SplFileInfo
     /**
      * Constructor
      * @param  string                            $key            The file's key in $_FILES superglobal
-     * @param  Base              $storage        The method with which to store file
+     * @param  Storage_Base              $storage        The method with which to store file
      * @throws \Itxiao6\Upload\Exception\UploadException If file uploads are disabled in the php.ini file
      * @throws \InvalidArgumentException         If $_FILES key does not exist
      */
-    public function __construct($key, Base $storage)
+    public function __construct($key, Storage_Base $storage)
     {
         if (!isset($_FILES[$key])) {
             throw new InvalidArgumentException("Cannot find uploaded file identified by key: $key");
@@ -204,10 +213,10 @@ class File extends SplFileInfo
     public function addValidations($validations)
     {
         if (!is_array($validations)) {
-            $validations = array($validations);
+            $validations = [$validations];
         }
         foreach ($validations as $validation) {
-            if ($validation instanceof \Itxiao6\Upload\Validation\Base) {
+            if ($validation instanceof Validation_Base) {
                 $this->validations[] = $validation;
             }
         }
@@ -215,7 +224,7 @@ class File extends SplFileInfo
 
     /**
      * Get file validations
-     * @return array[\Upload\Validation\Base]
+     * @return array[\Itxiao6\Upload\Validation\Base]
      */
     public function getValidations()
     {

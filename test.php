@@ -9,7 +9,7 @@ use Itxiao6\Upload\Validation\Size;
 $storage = new FileSystem(__DIR__.'/data');
 
 # 初始化文件上传系统
-$file = new File('foo', $storage);
+$file = new File('picname', $storage);
 
 
 
