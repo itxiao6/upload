@@ -66,40 +66,41 @@ class File extends SplFileInfo
     protected $errors;
 
     /**
-     * Original file name provided by client (for internal use only)
+     * 上传文件的原始文件名（仅限于内部使用）
      * @var string
      */
     protected $originalName;
 
     /**
-     * File name (without extension)
+     * 文件名(无拓展名)
      * @var string
      */
     protected $name;
 
     /**
-     * File extension (without leading dot)
+     * 文件拓展名 (不带点)
      * @var string
      */
     protected $extension;
 
     /**
-     * File mimetype (e.g. "image/png")
+     * 文件类型 (e.g. "image/png")
      * @var string
      */
     protected $mimetype;
 
     /**
-     * Upload error code (for internal use only)
+     * 文件上传错误代码 (内部使用)
      * @var  int
      * @link http://www.php.net/manual/en/features.file-upload.errors.php
      */
     protected $errorCode;
 
     /**
-     * Constructor
-     * @param  string                            $key            The file's key in $_FILES superglobal
-     * @param  Storage_Base              $storage        The method with which to store file
+     *
+     * 文件上传处理类 .构造方法
+     * @param $key
+     * @param Storage_Base $storage
      * @throws \Itxiao6\Upload\Exception\UploadException If file uploads are disabled in the php.ini file
      * @throws \InvalidArgumentException         If $_FILES key does not exist
      */
@@ -117,7 +118,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get name
+     * 获取文件名
      * @return string
      */
     public function getName()
@@ -130,8 +131,8 @@ class File extends SplFileInfo
     }
 
     /**
-     * Set name (without extension)
-     * @param  string           $name
+     * 设置文件名 (没有拓展名)
+     * @param  string  $name
      * @return \Itxiao6\Upload\File     Self
      */
     public function setName($name)
@@ -142,7 +143,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get file name with extension
+     * 获取文件名带后缀名
      * @return string
      */
     public function getNameWithExtension()
@@ -151,7 +152,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get file extension (without leading dot)
+     * 获取拓展名 (没有点)
      * @return string
      */
     public function getExtension()
@@ -164,7 +165,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get mimetype
+     * 获取文件类型
      * @return string
      */
     public function getMimetype()
@@ -181,7 +182,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get md5
+     * 获取MD5值
      * @return string
      */
     public function getMd5()
@@ -190,7 +191,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get image dimensions
+     * 获取图像尺寸
      * @return array formatted array of dimensions
      */
     public function getDimensions()
@@ -203,11 +204,11 @@ class File extends SplFileInfo
     }
 
     /********************************************************************************
-    * Validate
+    * 验证
     *******************************************************************************/
 
     /**
-     * Add file validations
+     * 添加文件验证规则
      * @param \Upload\Validation\Base|array[\Upload\Validation\Base] $validations
      */
     public function addValidations($validations)
@@ -223,7 +224,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Get file validations
+     * 获取文件验证规则
      * @return array[\Itxiao6\Upload\Validation\Base]
      */
     public function getValidations()
@@ -232,7 +233,7 @@ class File extends SplFileInfo
     }
 
     /**
-     * Validate file
+     * 验证要上传的文件
      * @return bool True if valid, false if invalid
      */
     public function validate()
