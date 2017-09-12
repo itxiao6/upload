@@ -106,9 +106,9 @@ class File extends SplFileInfo
      */
     public function __construct($key,$storage)
     {
-        if (!isset($_FILES[$key])) {
-            throw new InvalidArgumentException("Cannot find uploaded file identified by key: $key");
-        }
+//        if (!isset($_FILES[$key])) {
+//            throw new InvalidArgumentException("Cannot find uploaded file identified by key: $key");
+//        }
         $this->storage = $storage;
         $this->validations = array();
         $this->errors = array();
