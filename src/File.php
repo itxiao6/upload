@@ -100,11 +100,11 @@ class File extends SplFileInfo
      *
      * 文件上传处理类 .构造方法
      * @param $key
-     * @param Storage_Base $storage
+     * @param $storage
      * @throws \Itxiao6\Upload\Exception\UploadException If file uploads are disabled in the php.ini file
      * @throws \InvalidArgumentException         If $_FILES key does not exist
      */
-    public function __construct($key, Storage_Base $storage)
+    public function __construct($key,$storage)
     {
         if (!isset($_FILES[$key])) {
             throw new InvalidArgumentException("Cannot find uploaded file identified by key: $key");
