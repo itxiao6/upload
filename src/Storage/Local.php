@@ -19,7 +19,6 @@ class Local implements Upload
      * @var string
      */
     protected $directory;
-
     /**
      * Local constructor.
      * @param $param
@@ -43,7 +42,6 @@ class Local implements Upload
         if(!isset($_FILES[$file])){
             throw new \Exception('要上传的文件不存在');
         }
-
         # 获取新文件名
         if($newName==null){
             $newName = $this -> getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
@@ -56,6 +54,11 @@ class Local implements Upload
         return $this -> webUrl.$newName;
     }
 
+    /**
+     * 获取指定长度的随机字符串
+     * @param $num
+     * @return string
+     */
     public function getARandLetter($num){
         $str = '';
         for ($i=0;$i<=$num;$i++){

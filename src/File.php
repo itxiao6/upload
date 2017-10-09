@@ -39,4 +39,14 @@ class File
         }
         return self::$driver[$type];
     }
+
+    /**
+     * 添加驱动类
+     * @param $name
+     * @param $class
+     */
+    public static function add_class($name,$class)
+    {
+        return self::$class[$name] = $class;
+    }
 }
