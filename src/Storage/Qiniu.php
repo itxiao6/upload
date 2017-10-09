@@ -4,50 +4,37 @@ use Itxiao6\Upload\Storage\Base;
 use Itxiao6\Upload\Exception\UploadException;
 use Itxiao6\Upload\File;
 use InvalidArgumentException;
-use JohnLui\AliyunOSS;
+use Qiniu\Qiniu as Qiniua;
 /**
- * 阿里Oss文件存储
+ * 七牛文件存储
  * Class FileSystem
  * @package Itxiao6\Upload\Storage
  */
-class AliOssSystem extends Base
+class Qiniu extends Base
 {
-    /**
-     * VPC 内网域名
-     * @var
-     */
-    protected static $vpc_host;
-    /**
-     * 经典网络内网域名
-     * @var
-     */
-    protected static $loca_host;
     /**
      * web可以访问的url
      * @var
      */
     protected $webUrl;
     /**
-     * 阿里OSS驱动
+     * 七牛驱动
      * @var
      */
     protected static $client;
     /**
-     * 阿里OSS的专属域名
+     * 七牛的专属域名
      * @var
      */
     protected static $host;
 
     /**
-     * 阿里OSS储存构造器
+     * 七牛储存构造器
      * @param $accessKey
      * @param $secretKey
      * @param $Bucket_Name
-     * @param $host web 访问域名
-     * @param $vpc_host 内网域名
-     * @param $loca_host 经典网络内网域名
      */
-    public function __construct($accessKey,$secretKey,$Bucket_Name,$host,$vpc_host,$loca_host)
+    public function __construct($accessKey,$secretKey,$Bucket_Name,$host)
     {
         self::$client = Qiniua::create([
             'access_key' => $accessKey,
@@ -55,8 +42,6 @@ class AliOssSystem extends Base
             'bucket'     => $Bucket_Name
         ]);
         self::$host = $host;
-        self::$vpc_host = $vpc_host;
-        self::$loca_host = $loca_host;
     }
     /**
      * 获取WebUrl
@@ -87,10 +72,19 @@ class AliOssSystem extends Base
             $file->addError('File already exists');
             throw new UploadException('File already exists');
         }
-        self::$client = AliyunOSS::boot('','','','','');
-        self::$client -> uploadFile();
-        # 阿里OSS上传文件
-        if(false==false){
+        # 七牛上传文件
+        if($str = self::$client
+            -> uploadFile(
+                $file->getPathname(),
+                (isset($newName)||$newName==''?
+                    $file -> getName().'.'.$file->getExtension()
+                    :$newName
+                )) -> data['url']){
+
+            # 获取开始的位置
+            $start = strripos($str,'/');
+            # 设置web访问地址
+            $this -> webUrl = rtrim(self::$host,'/').substr($str,$start);
             return true;
         }else{
             return false;
