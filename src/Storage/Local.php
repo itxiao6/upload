@@ -46,13 +46,13 @@ class Local implements Upload
         }
         # 判断是否存在验证
         if($validation!=null){
-            $validation();
+            $validation($_FILES[$file]);
         }
         # 获取新文件名
         $newName = $this -> getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
 
         # 上传文件
-        if(!$this->moveUploadedFile($_FILES[$file]['tmp_name'],$this -> directory.$newName)){
+        if(!$this -> moveUploadedFile($_FILES[$file]['tmp_name'],$this -> directory.$newName)){
             throw new UploadException('文件上传失败');
         }
         # 返回上传结果
