@@ -1,5 +1,6 @@
 <?php
 namespace Itxiao6\Upload\Storage;
+use Itxiao6\Upload\Exception\UploadException;
 use Itxiao6\Upload\Interfaces\Upload;
 
 /**
@@ -33,22 +34,26 @@ class Local implements Upload
 
     /**
      * @param $file
-     * @param null $newName
-     * @return bool
+     * @param \Closure $validation
+     * @return string
+     * @throws \Exception
      */
-    public function upload($file, $newName = null)
+    public function upload($file, $validation = null)
     {
         # 判断是否为通过Files上传的
         if(!isset($_FILES[$file])){
-            throw new \Exception('要上传的文件不存在');
+            throw new UploadException('要上传的文件不存在');
+        }
+        # 判断是否存在验证
+        if($validation!=null){
+            $validation();
         }
         # 获取新文件名
-        if($newName==null){
-            $newName = $this -> getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
-        }
+        $newName = $this -> getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
+
         # 上传文件
         if(!$this->moveUploadedFile($_FILES[$file]['tmp_name'],$this -> directory.$newName)){
-            throw new \Exception('文件上传失败');
+            throw new UploadException('文件上传失败');
         }
         # 返回上传结果
         return $this -> webUrl.$newName;
@@ -67,26 +72,16 @@ class Local implements Upload
         return $str;
     }
     /**
+     * 上传多个文件
      * @param $file
-     * @param null $newName
+     * @param null $validation
      * @return bool
      */
-    public function uploads($file, $newName = null)
+    public function uploads($files, $validation = null)
     {
-        # 判断是否为通过Files上传的
-        if(!isset($_FILES[$file])){
-            throw new \Exception('要上传的文件不存在');
-        }
-        # 上传文件
-        if(!$this->moveUploadedFile($file, $newFile)){
-            throw new \Exception('文件上传失败');
-        }
-        # 获取新文件名
-        if($newFile==null){
-            $newFile = $this -> getARandLetter(15);
-        }
-        # 返回上传结果
-        return $this->moveUploadedFile($_FILES[$file]['tmp_name'],$newName);
+//        TODO 整理二维数组
+//        TODO 循环调用上传文件
+//        TODO 拼接数组 并返回
     }
 
     /**
