@@ -6,10 +6,10 @@ use Itxiao6\Upload\Storage\Alioss;
 
 /**
  * 文件处理
- * Class File
+ * Class Upload
  * @package Itxiao6\Upload
  */
-class File
+class Upload
 {
     /**
      * 驱动
