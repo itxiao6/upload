@@ -42,8 +42,9 @@ class Upload
 
     /**
      * 添加驱动类
-     * @param $name
-     * @param $class
+     * @param $name 驱动名称
+     * @param $class 类名
+     * @return mixed
      */
     public static function add_class($name,$class)
     {

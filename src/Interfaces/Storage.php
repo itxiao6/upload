@@ -3,10 +3,10 @@ namespace Itxiao6\Upload\Interfaces;
 
 /**
  * 文件上传驱动接口约束
- * Interface Upload
+ * Interface Storage
  * @package Itxiao6\Upload\Interfaces
  */
-interface Upload
+interface Storage
 {
     /**
      * 上传一个文件

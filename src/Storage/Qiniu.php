@@ -1,8 +1,8 @@
 <?php
 namespace Itxiao6\Upload\Storage;
+use Itxiao6\Upload\Interfaces\Storage;
 use Itxiao6\Upload\Storage\Base;
 use Itxiao6\Upload\Exception\UploadException;
-use Itxiao6\Upload\File;
 use InvalidArgumentException;
 use Qiniu\Qiniu as Qiniua;
 /**
@@ -10,7 +10,7 @@ use Qiniu\Qiniu as Qiniua;
  * Class FileSystem
  * @package Itxiao6\Upload\Storage
  */
-class Qiniu extends Base
+class Qiniu implements Storage
 {
     /**
      * web可以访问的url
@@ -53,12 +53,12 @@ class Qiniu extends Base
 
     /**
      * Upload
-     * @param  File $file The file object to upload
+     * @param $file The file object to upload
      * @param  string $newName Give the file it a new name
      * @return bool
      * @throws \RuntimeException   If overwrite is false and file already exists
      */
-    public function upload(File $file, $newName = null)
+    public function upload( $file, $newName = null)
     {
         if (is_string($newName)) {
             $fileName = strpos($newName, '.') ? $newName : $newName.'.'.$file->getExtension();
@@ -89,5 +89,9 @@ class Qiniu extends Base
         }else{
             return false;
         }
+    }
+    public function uploads($files)
+    {
+        // TODO: Implement uploads() method.
     }
 }

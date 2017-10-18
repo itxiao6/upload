@@ -13,4 +13,11 @@ interface Base
      * @return string
      */
     public function getMessage();
+
+    /**
+     * 验证
+     * @param $file
+     * @return mixed
+     */
+    public function validation($file);
 }

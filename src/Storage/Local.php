@@ -1,14 +1,15 @@
 <?php
 namespace Itxiao6\Upload\Storage;
 use Itxiao6\Upload\Exception\UploadException;
-use Itxiao6\Upload\Interfaces\Upload;
+use Itxiao6\Upload\Interfaces\Storage;
+use Itxiao6\Upload\Validation\Code;
 
 /**
  * 本地文件存储
  * Class FileSystem
  * @package Itxiao6\Upload\Storage
  */
-class Local implements Upload
+class Local implements Storage
 {
     /**
      * web可以访问的url
@@ -33,8 +34,9 @@ class Local implements Upload
     }
 
     /**
+     * 上传文件
      * @param $file
-     * @param \Closure $validation
+     * @param array $validation
      * @return string
      * @throws \Exception
      */
@@ -44,13 +46,23 @@ class Local implements Upload
         if(!isset($_FILES[$file])){
             throw new UploadException('要上传的文件不存在');
         }
+        if($validation == null){
+            # 默认的验证规则
+            $validation = [new Code()];
+        }
         # 判断是否存在验证
         if($validation!=null){
-            $validation($_FILES[$file]);
+            # 循环处理验证规则
+            foreach ($validation as $item){
+                # 判断验证结果
+                if(!$validation -> validation($_FILES[$file])){
+                    # 抛出异常
+                    throw new UploadException($validation -> getMessage());
+                }
+            }
         }
         # 获取新文件名
         $newName = $this -> getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
-
         # 上传文件
         if(!$this -> moveUploadedFile($_FILES[$file]['tmp_name'],$this -> directory.$newName)){
             throw new UploadException('文件上传失败');
@@ -73,7 +85,7 @@ class Local implements Upload
     }
     /**
      * 上传多个文件
-     * @param $file
+     * @param $files
      * @param null $validation
      * @return bool
      */
