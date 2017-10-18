@@ -1,6 +1,7 @@
 <?php
 namespace Itxiao6\Upload\Validation;
 /**
+ * 文件类型验证
  * Class Mimetype
  * @package Itxiao6\Upload\Validation
  */
