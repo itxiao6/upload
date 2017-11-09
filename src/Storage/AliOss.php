@@ -1,7 +1,6 @@
 <?php
 namespace Itxiao6\Upload\Storage;
 
-use Itxiao6\Upload\Exception\UploadException;
 use InvalidArgumentException;
 use Itxiao6\Upload\Interfaces\Storage;
 use JohnLui\AliyunOSS;
@@ -85,7 +84,7 @@ class AliOss implements Storage
         $newFile = $this->directory . $fileName;
         if ($this->overwrite === false && file_exists($newFile)) {
             $file->addError('File already exists');
-            throw new UploadException('File already exists');
+//            throw new UploadException('File already exists');
         }
         self::$client = AliyunOSS::boot('','','','','');
         self::$client -> uploadFile();

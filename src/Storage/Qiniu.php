@@ -2,7 +2,6 @@
 namespace Itxiao6\Upload\Storage;
 use Itxiao6\Upload\Interfaces\Storage;
 use Itxiao6\Upload\Storage\Base;
-use Itxiao6\Upload\Exception\UploadException;
 use InvalidArgumentException;
 use Qiniu\Qiniu as Qiniua;
 /**
@@ -70,7 +69,7 @@ class Qiniu implements Storage
         $newFile = $this->directory . $fileName;
         if ($this->overwrite === false && file_exists($newFile)) {
             $file->addError('File already exists');
-            throw new UploadException('File already exists');
+//            throw new UploadException('File already exists');
         }
         # 七牛上传文件
         if($str = self::$client
