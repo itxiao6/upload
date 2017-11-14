@@ -1,29 +1,31 @@
 <?php
 namespace Itxiao6\Upload;
-use Itxiao6\Upload\Storage\Local;
-use Itxiao6\Upload\Storage\Qiniu;
-use Itxiao6\Upload\Storage\Alioss;
 
 /**
- * 文件处理
+ * 文件上传包(主入口)
  * Class Upload
  * @package Itxiao6\Upload
  */
 class Upload
 {
     /**
-     * 驱动
+     * 实例池
+     * @var array
+     */
+    protected static $example = [];
+    /**
+     * 目前使用的驱动
      * @var bool
      */
-    protected static $driver = false;
+    protected static $driver = 'Local';
     /**
      * 接口
      * @var array
      */
-    protected static $class = [
-        'local'=>Local::class,
-        'qiniu'=>Qiniu::class,
-        'alioss'=>Alioss::class,
+    protected static $interfaces = [
+        'local'=>Itxiao6\Upload\Storage\Local::class,
+        'qiniu'=>Itxiao6\Upload\Storage\Qiniu::class,
+        'alioss'=>Itxiao6\Upload\Storage\Alioss::class,
     ];
 
     /**
@@ -32,12 +34,18 @@ class Upload
      * @param $param 附带参数
      * @return mixed
      */
-    public static function getInterface($type,$param)
+    public static function getInterface()
     {
-        if(!isset(self::$driver[$type])){
-            self::$driver[$type] = new self::$class[$type]($param);
-        }
-        return self::$driver[$type];
+    }
+
+    /**
+     * 设置驱动类型
+     * @param null | string $name
+     * @return bool|null
+     */
+    public static function set_driver($name = null)
+    {
+        return self::$driver = ($name===null)?self::$driver:$name;
     }
 
     /**

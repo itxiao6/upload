@@ -1,10 +1,10 @@
 <?php
-namespace Itxiao6\Upload\Tool;
+namespace Itxiao6\Upload\Tools;
 
 /**
  * 文件实例
  * Class File
- * @package Itxiao6\Upload\Tool
+ * @package Itxiao6\Upload\Tools
  */
 class File
 {
