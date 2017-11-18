@@ -23,23 +23,60 @@ class Upload
      * @var array
      */
     protected static $interfaces = [
-        'local'=>Itxiao6\Upload\Storage\Local::class,
-        'qiniu'=>Itxiao6\Upload\Storage\Qiniu::class,
-        'alioss'=>Itxiao6\Upload\Storage\Alioss::class,
+        'Local'=>\Itxiao6\Upload\Storage\Local::class,
+        'Qiniu'=>\Itxiao6\Upload\Storage\Qiniu::class,
+        'Alioss'=>\Itxiao6\Upload\Storage\Alioss::class,
     ];
 
     /**
-     * 获取一个文件上传驱动
-     * @param $type 类型
-     * @param $param 附带参数
-     * @return mixed
+     * 获取现有的接口
+     * @return array
      */
-    public static function getInterface()
+    public static function get_interface()
     {
+        return self::$interfaces;
     }
 
     /**
-     * 设置驱动类型
+     * 设置接口
+     * @param $name
+     * @param null $class
+     * @return int|null
+     */
+    public static function set_interface($name,$class = null)
+    {
+        if($class === null){
+            return self::$interfaces = array_push(self::$interfaces,$name);
+        }
+        return self::$interfaces[$name] = $class;
+    }
+
+    /**
+     * 装饰者(指向Tools 上传工具类)
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        return \Itxiao6\Upload\Tools\Upload::$name(self::$example[self::$driver],...$arguments);
+        // TODO: Implement __callStatic() method.
+    }
+
+    /**
+     * 启动上传组件
+     */
+    public static function start()
+    {
+        # 判断驱动是否存在
+        if(!isset(self::$interfaces[self::$driver])){
+            return false;
+        }
+        return self::$example[self::$driver] = self::$interfaces[self::$driver]::create(...func_get_args());
+    }
+
+    /**
+     * 设置文件上传驱动
      * @param null | string $name
      * @return bool|null
      */
@@ -49,13 +86,11 @@ class Upload
     }
 
     /**
-     * 添加驱动类
-     * @param $name 驱动名称
-     * @param $class 类名
-     * @return mixed
+     * 获取目前的驱动
+     * @return bool
      */
-    public static function add_class($name,$class)
+    public static function get_driver()
     {
-        return self::$class[$name] = $class;
+        return self::$driver;
     }
 }

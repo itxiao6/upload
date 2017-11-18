@@ -20,16 +20,27 @@ class Local implements Storage
      * @var string
      */
     protected $directory;
+
     /**
-     * Local constructor.
-     * @param $param
+     * 本地文件存储器
+     * @param $directory
+     * @param $webUrl
      */
-    public function __construct($param)
+    protected function __construct($directory,$webUrl)
     {
         # 上传文件夹
-        $this -> directory = $param['directory'];
+        $this -> directory = $directory;
         # web 访问目录
-        $this -> webUrl = $param['webUrl'];
+        $this -> webUrl = $webUrl;
+    }
+
+    /**
+     * 创建一个上传驱动
+     * @return mixed
+     */
+    public static function create()
+    {
+        return new self(...func_get_args());
     }
 
     /**
@@ -39,7 +50,7 @@ class Local implements Storage
      * @return string
      * @throws \Exception
      */
-    public function upload($file, $validation = null)
+    public function upload($example,$file, $validation = null)
     {
         # 判断是否为通过Files上传的
         if(!isset($_FILES[$file])){
@@ -82,13 +93,14 @@ class Local implements Storage
         }
         return $str;
     }
+
     /**
      * 上传多个文件
-     * @param $files
+     * @param $example
+     * @param $file
      * @param null $validation
-     * @return bool
      */
-    public function uploads($files, $validation = null)
+    public function uploads($example,$file, $validation = null)
     {
 //        TODO 整理二维数组
 //        TODO 循环调用上传文件
@@ -96,11 +108,33 @@ class Local implements Storage
     }
 
     /**
-     * 获取WebUrl
-     * @return mixed
+     * 上传一个base64类型的文件
+     * @param $example
+     * @param $file
+     * @param null $validation
      */
-    public function getWebUrl(){
-        return $this -> webUrl;
+    public function upload_base64($example, $file, $validation = null)
+    {
+        // TODO: Implement upload_base64() method.
+    }
+
+    /**
+     * 上传多个base64类型的文件
+     * @param $example
+     * @param $file
+     * @param null $validation
+     */
+    public function uploads_base64($example, $file, $validation = null)
+    {
+        // TODO: Implement uploads_base64() method.
+    }
+
+    /**
+     * base字符转 文件
+     */
+    public function base64_to_file()
+    {
+
     }
 
     /**
