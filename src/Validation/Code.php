@@ -1,5 +1,6 @@
 <?php
 namespace Itxiao6\Upload\Validation;
+use Itxiao6\Upload\Exception\UploadException;
 use Itxiao6\Upload\Validation\Base;
 
 /**
@@ -44,6 +45,7 @@ class Code implements Base
      * 验证
      * @param $file
      * @return bool
+     * @throws UploadException
      */
     public function validation($file)
     {
@@ -51,9 +53,7 @@ class Code implements Base
         if($file['error']==0){
             return true;
         }
-        # 获取错误原因
-        $this -> Message = $this -> error[$file['error']];
-        # 返回验证结果
-        return false;
+        # 抛出异常
+        throw new UploadException($this -> error[$file['error']]);
     }
 }

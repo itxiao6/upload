@@ -2,6 +2,7 @@
 namespace Itxiao6\Upload\Storage;
 use Itxiao6\Upload\Interfaces\Storage;
 use Itxiao6\Upload\Validation\Code;
+use Itxiao6\Upload\Exception\UploadException;
 
 /**
  * 本地文件存储
@@ -20,6 +21,11 @@ class Local implements Storage
      * @var string
      */
     protected $directory;
+    /**
+     * 异常信息
+     * @var bool
+     */
+    protected $exception = false;
 
     /**
      * 本地文件存储器
@@ -46,39 +52,64 @@ class Local implements Storage
     /**
      * 上传文件
      * @param $file
-     * @param array $validation
-     * @return string
-     * @throws \Exception
+     * @param null $validation
+     * @return bool|string
      */
-    public function upload($example,$file, $validation = null)
+    public function upload($file, $validation = null)
     {
         # 判断是否为通过Files上传的
         if(!isset($_FILES[$file])){
-//            throw new UploadException('要上传的文件不存在');
+            # 保存异常信息
+            $this -> exception[$file] = new UploadException('要上传的文件不存在');
+            return false;
         }
-        if($validation == null){
-            # 默认的验证规则
-            $validation = [new Code()];
-        }
-        # 判断是否存在验证
-        if($validation!=null){
-            # 循环处理验证规则
-            foreach ($validation as $item){
-                # 判断验证结果
-                if(!$validation -> validation($_FILES[$file])){
-                    # 抛出异常
-//                    throw new UploadException($validation -> getMessage());
+        # 验证验证规则
+        try{
+            if($validation == null){
+                # 默认的验证规则
+                $validation = [new Code()];
+            }
+            # 判断是否存在验证
+            if($validation!=null){
+                # 循环处理验证规则
+                foreach ($validation as $item){
+                    # 验证
+                    $item -> validation($_FILES[$file]);
                 }
             }
+        }catch (UploadException $exception){
+            # 保存异常信息
+            $this -> exception[$file] = $exception;
+            return false;
         }
         # 获取新文件名
         $newName = $this -> getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
         # 上传文件
         if(!$this -> moveUploadedFile($_FILES[$file]['tmp_name'],$this -> directory.$newName)){
-//            throw new UploadException('文件上传失败');
+            # 保存异常信息
+            $this -> exception[$file] = new UploadException('文件上传失败');
+            return false;
         }
         # 返回上传结果
         return $this -> webUrl.$newName;
+    }
+
+    /**
+     * 获取错误信息
+     * @param null | string $name
+     * @return array | string
+     */
+    public function get_error_message($name = null)
+    {
+        if($name!=null){
+            return $this -> exception[$name] -> getMessage();
+        }else{
+            $message = [];
+            foreach ($this -> exception as $item) {
+                $message[] = $item -> getMessage();
+            }
+            return $message;
+        }
     }
 
     /**
@@ -96,11 +127,10 @@ class Local implements Storage
 
     /**
      * 上传多个文件
-     * @param $example
      * @param $file
      * @param null $validation
      */
-    public function uploads($example,$file, $validation = null)
+    public function uploads($file, $validation = null)
     {
 //        TODO 整理二维数组
 //        TODO 循环调用上传文件
@@ -109,22 +139,20 @@ class Local implements Storage
 
     /**
      * 上传一个base64类型的文件
-     * @param $example
      * @param $file
      * @param null $validation
      */
-    public function upload_base64($example, $file, $validation = null)
+    public function upload_base64($file, $validation = null)
     {
         // TODO: Implement upload_base64() method.
     }
 
     /**
      * 上传多个base64类型的文件
-     * @param $example
      * @param $file
      * @param null $validation
      */
-    public function uploads_base64($example, $file, $validation = null)
+    public function uploads_base64( $file, $validation = null)
     {
         // TODO: Implement uploads_base64() method.
     }

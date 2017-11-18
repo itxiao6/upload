@@ -14,26 +14,26 @@ interface Storage
      * @param $example
      * @return mixed
      */
-    public function upload($example,$file, $validation = null);
+    public function upload($file, $validation = null);
 
     /**
      * 上传多个文件
      * @param $example
      * @return mixed
      */
-    public function uploads($example,$file, $validation = null);
+    public function uploads($file, $validation = null);
 
     /**
      * 上传一个base64格式的文件
      * @param $example
      * @return mixed
      */
-    public function upload_base64($example,$file, $validation = null);
+    public function upload_base64($file, $validation = null);
 
     /**
      * 上传多个base64格式的文件
      * @param $example
      * @return mixed
      */
-    public function uploads_base64($example,$file, $validation = null);
+    public function uploads_base64($file, $validation = null);
 }

@@ -52,15 +52,14 @@ class Upload
     }
 
     /**
-     * 装饰者(指向Tools 上传工具类)
+     * 装饰者(指向制定的 存储器)
      * @param $name
      * @param $arguments
      * @return mixed
      */
     public static function __callStatic($name, $arguments)
     {
-        return \Itxiao6\Upload\Tools\Upload::$name(self::$example[self::$driver],...$arguments);
-        // TODO: Implement __callStatic() method.
+        return self::$example[self::$driver] -> $name(...$arguments);
     }
 
     /**
