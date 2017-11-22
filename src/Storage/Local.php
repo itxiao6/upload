@@ -23,9 +23,9 @@ class Local implements Storage
     protected $directory;
     /**
      * 异常信息
-     * @var bool
+     * @var null|array
      */
-    protected $exception = false;
+    protected $exception = null;
 
     /**
      * 本地文件存储器
@@ -104,6 +104,9 @@ class Local implements Storage
         if($name!=null){
             return $this -> exception[$name] -> getMessage();
         }else{
+            if($this -> exception === null){
+                return false;
+            }
             $message = [];
             foreach ($this -> exception as $item) {
                 $message[] = $item -> getMessage();

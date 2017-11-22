@@ -1,9 +1,8 @@
 <?php
 namespace Itxiao6\Upload\Storage;
-
-use InvalidArgumentException;
 use Itxiao6\Upload\Interfaces\Storage;
-use JohnLui\AliyunOSS;
+use OSS\OssClient;
+use OSS\Core\OssException;
 /**
  * 阿里Oss文件存储
  * Class FileSystem
@@ -11,31 +10,14 @@ use JohnLui\AliyunOSS;
  */
 class AliOss implements Storage
 {
+
     /**
-     * VPC 内网域名
-     * @var
+     * 异常信息
+     * @var null|array
      */
-    protected static $vpc_host;
-    /**
-     * 经典网络内网域名
-     * @var
-     */
-    protected static $loca_host;
-    /**
-     * web可以访问的url
-     * @var
-     */
-    protected $webUrl;
-    /**
-     * 阿里OSS驱动
-     * @var
-     */
-    protected static $client;
-    /**
-     * 阿里OSS的专属域名
-     * @var
-     */
-    protected static $host;
+    protected $exception = null;
+
+
 
     /**
      * 阿里OSS储存构造器
@@ -46,57 +28,64 @@ class AliOss implements Storage
      * @param $vpc_host 内网域名
      * @param $loca_host 经典网络内网域名
      */
-    public function __construct($accessKey,$secretKey,$Bucket_Name,$host,$vpc_host,$loca_host)
+    protected function __construct($accessKey,$secretKey,$Bucket_Name,$host,$vpc_host,$loca_host)
     {
-        self::$client = Qiniua::create([
-            'access_key' => $accessKey,
-            'secret_key' => $secretKey,
-            'bucket'     => $Bucket_Name
-        ]);
-        self::$host = $host;
-        self::$vpc_host = $vpc_host;
-        self::$loca_host = $loca_host;
-    }
-    /**
-     * 获取WebUrl
-     * @return mixed
-     */
-    public function getWebUrl(){
-        return $this -> webUrl;
+        $accessKeyId = "<AccessKeyID that you obtain from OSS>";
+        $accessKeySecret = "<AccessKeySecret that you obtain from OSS>";
+        $endpoint = "<Domain that you select to access an OSS data center, such as \"oss-cn-hangzhou.aliyuncs.com>";
+        try {
+            $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+        } catch (OssException $e) {
+            print $e->getMessage();
+        }
     }
 
     /**
-     * Upload
-     * @param  $file The file object to upload
-     * @param  string $newName Give the file it a new name
-     * @return bool
-     * @throws \RuntimeException   If overwrite is false and file already exists
+     * 创建存储器
+     * @return AliOss
      */
-    public function upload($file, $newName = null)
+    public static function create()
     {
-        if (is_string($newName)) {
-            $fileName = strpos($newName, '.') ? $newName : $newName.'.'.$file->getExtension();
+        return new self(...func_get_args());
+    }
 
-        } else {
-            $fileName = $file->getNameWithExtension();
-        }
-
-        $newFile = $this->directory . $fileName;
-        if ($this->overwrite === false && file_exists($newFile)) {
-            $file->addError('File already exists');
-//            throw new UploadException('File already exists');
-        }
-        self::$client = AliyunOSS::boot('','','','','');
-        self::$client -> uploadFile();
-        # 阿里OSS上传文件
-        if(false==false){
-            return true;
+    /**
+     * 获取错误信息
+     * @param null|string $name
+     * @return array|bool
+     */
+    public function get_error_message($name = null)
+    {
+        if($name!=null){
+            return $this -> exception[$name] -> getMessage();
         }else{
-            return false;
+            if($this -> exception === null){
+                return false;
+            }
+            $message = [];
+            foreach ($this -> exception as $item) {
+                $message[] = $item -> getMessage();
+            }
+            return $message;
         }
     }
-    public function uploads($files)
+
+    public function upload($file, $validation = null)
+    {
+        // TODO: Implement upload() method.
+    }
+
+    public function uploads($file, $validation = null)
     {
         // TODO: Implement uploads() method.
+    }
+
+    public function upload_base64($file, $validation = null)
+    {
+        // TODO: Implement upload_base64() method.
+    }
+    public function uploads_base64($file, $validation = null)
+    {
+        // TODO: Implement uploads_base64() method.
     }
 }
