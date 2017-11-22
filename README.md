@@ -10,14 +10,29 @@ Upload::set_driver('Local');// Local\Qiniu\Alioss
 ```
 #### 3.启动驱动
 ```php
-# 定义上传的文件夹
-$directory = __DIR__.'/';
+# 本地文件存储器
+    # 定义上传的文件夹
+    $directory = __DIR__.'/';
+    
+    # 定义上传完的webUrl
+    $webUrl = '/';
+    
+    # 启动上传组件
+    Upload::start($directory,$webUrl);
 
-# 定义上传完的webUrl
-$webUrl = '/';
-
-# 启动上传组件
-Upload::start($directory,$webUrl);
+# 七牛云存储器
+    # 定义accessKey
+    $accessKey = 'hmkss38pl8WJZjPpbbgY5Ldzj9Ma0_RsCUPezt';
+    # 定义secretKey
+    $secretKey = '0R2ossqsaaEqmaOZSkwHl5aSXYD4hDQxKAUQIpdvPSvt';
+    # 定义桶的名字
+    $Bucket_Name = 'upload';
+    
+    # 定义外网访问路径
+    $host = 'http://ovy5w745h.bkt.clouddn.com/';
+    
+    # 启动上传组件
+    Upload::start($accessKey,$secretKey,$Bucket_Name,$host);
 ```
 #### 4.上传文件
 ```php
