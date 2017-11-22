@@ -8,7 +8,17 @@ namespace Itxiao6\Upload\Interfaces;
  */
 interface Storage
 {
-
+    /**
+     * 获取错误信息
+     * @param null | string $name
+     * @return array | string
+     */
+    public function get_error_message($name = null);
+    /**
+     * 创建一个存储器
+     * @return mixed
+     */
+    public static function create();
     /**
      * 上传单个文件
      * @param $example
