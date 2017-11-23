@@ -1,12 +1,23 @@
 <html>
     <head>
         <title>文件上传示例</title>
+        <meta charset="utf-8">
     </head>
     <body>
-    <form action="./index.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="image">
-        <input type="submit" value="上传">
-    </form>
+    <div>
+        单文件上传
+        <hr>
+        <form action="./index.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <input type="submit" value="上传">
+        </form>
+        多文件上传
+        <hr>
+        <form action="./index.php" method="post" enctype="multipart/form-data">
+            <input multiple="multiple" type="file" name="image[]">
+            <input type="submit" value="上传">
+        </form>
+    </div>
     </body>
 
 </html>

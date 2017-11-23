@@ -1,6 +1,7 @@
 <?php
 namespace Itxiao6\Upload\Storage;
 use Itxiao6\Upload\Interfaces\Storage;
+use Itxiao6\Upload\Tools\Tool;
 use Itxiao6\Upload\Validation\Code;
 use Itxiao6\Upload\Exception\UploadException;
 
@@ -52,17 +53,23 @@ class Local implements Storage
 
     /**
      * 上传文件
-     * @param $file
+     * @param string|array$file
      * @param null $validation
      * @return bool|string
      */
     public function upload($file, $validation = null)
     {
-        # 判断是否为通过Files上传的
-        if(!isset($_FILES[$file])){
-            # 保存异常信息
-            $this -> exception[$file] = new UploadException('要上传的文件不存在');
-            return false;
+        # 判断是否为数组
+        if(is_array($file)){
+            $_FILES[$file['name']] = $file;
+            $file = $file['name'];
+        }else{
+            # 判断是否为通过Files上传的
+            if(!isset($_FILES[$file])){
+                # 保存异常信息
+                $this -> exception[$file] = new UploadException('要上传的文件不存在');
+                return false;
+            }
         }
         # 验证验证规则
         try{
@@ -133,12 +140,15 @@ class Local implements Storage
      * 上传多个文件
      * @param $file
      * @param null $validation
+     * @return array|bool|string
      */
     public function uploads($file, $validation = null)
     {
-//        TODO 整理二维数组
-//        TODO 循环调用上传文件
-//        TODO 拼接数组 并返回
+        $files = [];
+        foreach (Tool::files_to_item($file) as $key=>$item){
+            $files[] = $this -> upload($item,$validation);
+        }
+        return $files;
     }
 
     /**

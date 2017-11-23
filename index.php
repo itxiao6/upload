@@ -9,17 +9,17 @@ use Itxiao6\Upload\Upload;
 
 # 本地存储器
 
-//# 设置文件存储驱动
-//Upload::set_driver('Local');
-//
-//# 定义上传的文件夹
-//$directory = __DIR__.'/';
-//
-//# 定义上传完的webUrl
-//$webUrl = '/';
-//
-//# 启动上传组件
-//Upload::start($directory,$webUrl);
+# 设置文件存储驱动
+Upload::set_driver('Local');
+
+# 定义上传的文件夹
+$directory = __DIR__.'/';
+
+# 定义上传完的webUrl
+$webUrl = '/';
+
+# 启动上传组件
+Upload::start($directory,$webUrl);
 
 
 # 七牛云存储器
@@ -54,8 +54,9 @@ use Itxiao6\Upload\Upload;
 //
 //Upload::start($accessKey,$secretKey,$bucket_name,$data_host);
 # 上传文件
-$data = Upload::upload('image');
-
+$data = Upload::uploads('image');
+echo "<pre>";
+var_dump($data);die();
 # 判断是否上传成功
 if($data!=false){
     # 输出图片
