@@ -38,6 +38,7 @@ class Local implements Storage
         $this -> directory = $directory;
         # web 访问目录
         $this -> webUrl = $webUrl;
+        return $this;
     }
 
     /**

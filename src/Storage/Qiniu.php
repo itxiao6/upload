@@ -55,6 +55,7 @@ class Qiniu implements Storage
         $this -> token = $this -> auth -> uploadToken($Bucket_Name);
 
         $this -> host = $host;
+        return $this;
     }
 
     /**
@@ -120,7 +121,7 @@ class Qiniu implements Storage
             return false;
         }
         # 获取随机文件名
-        $file_name = self::getARandLetter(15);
+        $file_name = self::getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
         # 上传文件
         list($ret, $error) = $this -> upManager->put($this -> token,$file_name, file_get_contents($_FILES[$file]['tmp_name']));
         if($error!=null){

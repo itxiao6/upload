@@ -33,6 +33,20 @@ Upload::set_driver('Local');// Local\Qiniu\Alioss
     
     # 启动上传组件
     Upload::start($accessKey,$secretKey,$Bucket_Name,$host);
+    # 获取七牛云的上传token
+    $token = Upload::get_token();
+# 阿里云OSS存储器
+    Upload::set_driver('Alioss');
+    // 桶的名字
+    $bucket_name = 'testupload';
+    # 您选定的OSS数据中心访问域名 参考(https://help.aliyun.com/document_detail/31837.html?spm=5176.doc32100.2.4.QQpTvt)
+    $data_host = 'oss-cn-hongkong.aliyuncs.com';
+    # 阿里云的secretKey
+    $accessKey = 'LTAIGYU9s407aZ';
+    # 阿里云的secretKey
+    $secretKey = 'UcKYzskkrRqsdW7eWs0wf3a';
+    
+    Upload::start($accessKey,$secretKey,$bucket_name,$data_host);
 ```
 #### 4.上传文件
 ```php
