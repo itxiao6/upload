@@ -1,14 +1,14 @@
 # 基于PHP编写的一个文件存储包:支持LAMP\LNMP\MAMP\SWOOLE
-
-#### 1.引入入口
+### 介绍:上传文件驱动支持:阿里云OSS，阿里云OSS，七牛云OSS 支持普通文件上传和base64文件上传
+#### 1. 引入入口
 ```php
 use Itxiao6\Upload\Upload;
 ```
-#### 2.设置文件存储驱动(支持本地存储,七牛云oss,阿里云OSS)
+#### 2. 设置文件存储驱动(支持本地存储,七牛云oss,阿里云OSS)
 ```php
 Upload::set_driver('Local');// Local\Qiniu\Alioss
 ```
-#### 3.启动驱动
+#### 3. 启动驱动
 ```php
 # 本地文件存储器
     # 定义上传的文件夹
@@ -48,7 +48,7 @@ Upload::set_driver('Local');// Local\Qiniu\Alioss
     
     Upload::start($accessKey,$secretKey,$bucket_name,$data_host);
 ```
-#### 4.上传文件
+#### 4. 上传文件
 ```php
 # 单个文件
 $data = Upload::upload('picname');
@@ -62,7 +62,7 @@ $data = Upload::upload_base64($_POST['file']);
 # 多个文件
 $data = Upload::uploads_base64($_POST['file']);
 ```
-#### 6.处理结果
+#### 6. 处理结果
 ```php
 # 判断是否上传成功
 if($data!=false){
