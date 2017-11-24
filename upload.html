@@ -17,7 +17,32 @@
             <input multiple="multiple" type="file" name="image[]">
             <input type="submit" value="上传">
         </form>
+        Base64文件上传
+        <hr>
+        <form action="./index.php" method="post" enctype="multipart/form-data">
+            <img id="img" src="" />
+            <input id="upload_base64" type="file" />
+            <input id="upload_base64_hidden" type="hidden" name="file">
+            <input type="submit" value="上传" />
+        </form>
     </div>
     </body>
-
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <script type="text/javascript">
+        // 实例化文件输入框的读取对象
+        var fileReader = new FileReader();
+        var base64File = null;
+        // 当文件输入框读取到文件时
+        $('#upload_base64').on('change', function(){
+            // 获取文件列表
+            var fileList = $("#upload_base64")[0].files;
+            fileReader.onload = function(e){
+                // 将读取 文件放置到一个img标签
+                $('#img').attr('src', e.target.result);
+                // 将读取到的Base64 放到隐藏域
+                $('#upload_base64_hidden').val(e.target.result);
+            }
+            fileReader.readAsDataURL(fileList[0]);
+        });
+    </script>
 </html>

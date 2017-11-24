@@ -93,7 +93,7 @@ class Alioss implements Storage
             return false;
         }
         # 获取随机文件名
-        $file_name = self::getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
+        $file_name = Tool::getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
         # 获取新文件名
         $res = $this -> ossClient->putObject($this -> bucket,$file_name,file_get_contents($_FILES[$file]['tmp_name']));
         # 判断是否上传成功
@@ -119,14 +119,6 @@ class Alioss implements Storage
         return $files;
     }
 
-    public function upload_base64($file, $validation = null)
-    {
-        // TODO: Implement upload_base64() method.
-    }
-    public function uploads_base64($file, $validation = null)
-    {
-        // TODO: Implement uploads_base64() method.
-    }
     /**
      * 创建存储器
      * @return AliOss
@@ -157,15 +149,39 @@ class Alioss implements Storage
         }
     }
     /**
-     * 获取指定长度的随机字符串
-     * @param $num
-     * @return string
+     * 上传一个base64类型的文件
+     * @param $file
+     * @param null $validation
+     * @return bool|string
      */
-    protected static function getARandLetter($num){
-        $str = '';
-        for ($i=0;$i<=$num;$i++){
-            $str .= rand(0,555);
+    public function upload_base64($file, $validation = null)
+    {
+        # 上传文件
+        return $this -> upload(Tool::base64_to_file($file,$validation));
+    }
+
+    /**
+     * 上传多个base64类型的文件
+     * @param $file
+     * @param null $validation
+     * @return array|bool|string
+     */
+    public function uploads_base64( $file, $validation = null)
+    {
+        # 定义上传结果
+        $result = [];
+        # 判断是否为多个文件
+        if(is_array($file)){
+            # 循环上传文件
+            foreach ($file as $name=>$item){
+                # 累加上传结果
+                $result[$name] = $this -> upload_base64($item,$validation);
+            }
+        }else{
+            # 返回一个文件的上传结果
+            return $this -> upload_base64($file,$validation);
         }
-        return $str;
+        # 返回上传结果
+        return $result;
     }
 }

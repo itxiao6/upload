@@ -50,9 +50,19 @@ Upload::set_driver('Local');// Local\Qiniu\Alioss
 ```
 #### 4.上传文件
 ```php
+# 单个文件
 $data = Upload::upload('picname');
+# 多个文件
+$data = Upload::uploads('picname');
 ```
-#### 5.处理结果
+#### 5. 上传 base64 文件
+```php
+# 单个文件
+$data = Upload::upload_base64($_POST['file']);
+# 多个文件
+$data = Upload::uploads_base64($_POST['file']);
+```
+#### 6.处理结果
 ```php
 # 判断是否上传成功
 if($data!=false){

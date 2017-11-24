@@ -54,9 +54,9 @@ Upload::start($directory,$webUrl);
 //
 //Upload::start($accessKey,$secretKey,$bucket_name,$data_host);
 # 上传文件
-$data = Upload::uploads('image');
-echo "<pre>";
-var_dump($data);die();
+//$data = Upload::uploads('image');
+# 上传base64 文件
+$data = Upload::upload_base64($_POST['file']);
 # 判断是否上传成功
 if($data!=false){
     # 输出图片

@@ -91,9 +91,9 @@ class Local implements Storage
             return false;
         }
         # 获取新文件名
-        $newName = $this -> getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
+        $newName = Tool::getARandLetter(15).'.'.explode('/',$_FILES[$file]['type'])[1];
         # 上传文件
-        if(!$this -> moveUploadedFile($_FILES[$file]['tmp_name'],$this -> directory.$newName)){
+        if(!self::moveUploadedFile($_FILES[$file]['tmp_name'],$this -> directory.$newName)){
             # 保存异常信息
             $this -> exception[$file] = new UploadException('文件上传失败');
             return false;
@@ -124,19 +124,6 @@ class Local implements Storage
     }
 
     /**
-     * 获取指定长度的随机字符串
-     * @param $num
-     * @return string
-     */
-    public function getARandLetter($num){
-        $str = '';
-        for ($i=0;$i<=$num;$i++){
-            $str .= rand(0,555);
-        }
-        return $str;
-    }
-
-    /**
      * 上传多个文件
      * @param $file
      * @param null $validation
@@ -155,28 +142,37 @@ class Local implements Storage
      * 上传一个base64类型的文件
      * @param $file
      * @param null $validation
+     * @return bool|string
      */
     public function upload_base64($file, $validation = null)
     {
-        // TODO: Implement upload_base64() method.
+        # 上传文件
+        return $this -> upload(Tool::base64_to_file($file,$validation));
     }
 
     /**
      * 上传多个base64类型的文件
      * @param $file
      * @param null $validation
+     * @return array|bool|string
      */
     public function uploads_base64( $file, $validation = null)
     {
-        // TODO: Implement uploads_base64() method.
-    }
-
-    /**
-     * base字符转 文件
-     */
-    public function base64_to_file()
-    {
-
+        # 定义上传结果
+        $result = [];
+        # 判断是否为多个文件
+        if(is_array($file)){
+            # 循环上传文件
+            foreach ($file as $name=>$item){
+                # 累加上传结果
+                $result[$name] = $this -> upload_base64($item,$validation);
+            }
+        }else{
+            # 返回一个文件的上传结果
+            return $this -> upload_base64($file,$validation);
+        }
+        # 返回上传结果
+        return $result;
     }
 
     /**
@@ -186,7 +182,7 @@ class Local implements Storage
      * @param  string $destination 新文件
      * @return bool
      */
-    protected function moveUploadedFile($source, $destination)
+    protected static function moveUploadedFile($source, $destination)
     {
         return copy($source,$destination);
     }
