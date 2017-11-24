@@ -2,7 +2,7 @@
 
 # 文件上传示例
 
-include "./vendor/autoload.php";
+include "../vendor/autoload.php";
 
 # 引入入口
 use Itxiao6\Upload\Upload;

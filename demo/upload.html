@@ -1,25 +1,25 @@
 <html>
     <head>
-        <title>文件上传示例</title>
+        <title>文件上包传示例</title>
         <meta charset="utf-8">
     </head>
     <body>
     <div>
         单文件上传
         <hr>
-        <form action="./index.php" method="post" enctype="multipart/form-data">
+        <form action="./demo/index.php" method="post" enctype="multipart/form-data">
             <input type="file" name="image">
             <input type="submit" value="上传">
         </form>
         多文件上传
         <hr>
-        <form action="./index.php" method="post" enctype="multipart/form-data">
+        <form action="./demo/index.php" method="post" enctype="multipart/form-data">
             <input multiple="multiple" type="file" name="image[]">
             <input type="submit" value="上传">
         </form>
         Base64文件上传
         <hr>
-        <form action="./index.php" method="post" enctype="multipart/form-data">
+        <form action="./demo/index.php" method="post" enctype="multipart/form-data">
             <img id="img" src="" />
             <input id="upload_base64" type="file" />
             <input id="upload_base64_hidden" type="hidden" name="file">
